@@ -12,3 +12,5 @@ You made it in 2 moves, here is the path:
 [7,1]
 [5,0]
 [3,1]
+
+might revisit later to add a user interface, for now we move.
