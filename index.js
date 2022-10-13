@@ -83,14 +83,12 @@ function knigtMoves(start, finish) {
   finish = JSON.stringify(finish);
   let queue = [start];
   visited.add(start);
-  path.unshift(start);
 
   while (queue.length > 0) {
     let current = queue.shift();
+    path.push(current);
 
-    let last = path[path.length - 1];
-
-    if (last === finish) {
+    if (current === finish) {
       return printPath(graph, path);
     }
 
@@ -98,7 +96,6 @@ function knigtMoves(start, finish) {
       if (!visited.has(i)) {
         visited.add(i);
         queue.push(i);
-        path.push(i);
       }
     }
   }
@@ -106,4 +103,4 @@ function knigtMoves(start, finish) {
   return "not found";
 }
 
-console.log(knigtMoves([3, 3], [4, 3]));
+console.log(knigtMoves([7, 1], [3, 1]));
