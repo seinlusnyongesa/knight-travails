@@ -8,10 +8,24 @@ const knightOffset = [
   [-2, 1],
   [-2, -1],
 ];
-let path = [];
 
-function printPath() {
-  return path;
+function printPath(graph, path) {
+  let newPath = [path[path.length - 1]];
+  for (let a = path.length - 2; a >= 0; a--) {
+    for (let i of graph[newPath[0]]) {
+      if (i === path[a]) {
+        newPath.unshift(i);
+      }
+    }
+  }
+
+  let formatPath = "";
+  newPath.map((v) => (formatPath += `${v}\n`));
+
+  let result = `You made it in ${newPath.length - 1} moves, here is the path:
+  ${formatPath}
+  `;
+  return result;
 }
 
 function board() {
@@ -61,11 +75,14 @@ function findKnightsPossibleMoves(location) {
 }
 
 function knigtMoves(start, finish) {
+  let path = [];
   let graph = buildGraph();
+
   let visited = new Set();
   start = JSON.stringify(start);
   finish = JSON.stringify(finish);
   let queue = [start];
+  visited.add(start);
   path.unshift(start);
 
   while (queue.length > 0) {
@@ -74,16 +91,14 @@ function knigtMoves(start, finish) {
     let last = path[path.length - 1];
 
     if (last === finish) {
-      return printPath();
+      return printPath(graph, path);
     }
 
-    if (!visited.has(current)) {
-      visited.add(current);
-      for (let i of graph[current]) {
-        if (!visited.has(i)) {
-          queue.push(i);
-          path.push(i);
-        }
+    for (let i of graph[current]) {
+      if (!visited.has(i)) {
+        visited.add(i);
+        queue.push(i);
+        path.push(i);
       }
     }
   }
@@ -91,4 +106,4 @@ function knigtMoves(start, finish) {
   return "not found";
 }
 
-console.log(knigtMoves([4, 5], [4, 3]));
+console.log(knigtMoves([3, 3], [4, 3]));
